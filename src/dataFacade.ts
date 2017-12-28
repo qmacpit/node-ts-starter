@@ -1,4 +1,3 @@
-//const { getData } = require('./dataHandler');
 import { User, getData, addUser, findUser, getUsers } from './dataHandler';
 
 addUser('john', 21);

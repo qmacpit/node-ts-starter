@@ -1,3 +1,6 @@
+## What & Why
+A simple node.js & typescipt started. Integration of js and ts code
+
 ### Build
 ```
 npm run build-ts
