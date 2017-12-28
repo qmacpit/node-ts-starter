@@ -12,6 +12,8 @@ app.get('/', (req, res) => res.send(getContent()));
 app.get('/users', (req, res) => res.send(getAllUsers()));
 app.get('/user/:username', (req, res) => res.send(getUser(req.params.username)));
 
+require('./tsApi')(app);
+
 app.listen(3000, () => {
     console.log('server running');
 });
