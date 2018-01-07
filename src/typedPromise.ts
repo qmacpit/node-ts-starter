@@ -17,7 +17,7 @@ const artifacts: Artifact[] = [
 
 const getArtifact = (artifactId: string): Promise<Artifact> => {
   // return Promise.resolve(artifacts.find(({id}) => id === artifactId));
-  return new Promise(resolve => {
+  return new Promise<Artifact>(resolve => {
     resolve(artifacts.find(({id}) => id === artifactId));
   });
 };

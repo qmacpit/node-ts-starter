@@ -13,5 +13,5 @@ npm run start
 
 ### Testing
 ```
-curl -H "Content-Type: application/json" http://localhost:3000/users
+curl -H "Content-Type: application/json" http://localhost:3000/api/users
 ```
