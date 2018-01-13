@@ -1,52 +1,41 @@
 import { Request, Response } from "express";
-import { Link, StaticRouter, Route, Switch } from 'react-router-dom';
-import * as React from 'react';
 import * as ReactDOMServer from 'react-dom/server';
+import { Link, StaticRouter, Route, Switch, matchPath, RouteProps } from 'react-router-dom';
+import { ROUTES, IRouteProps } from './routes';
+import main from './components/main';
 
+const EXCEPTIONS = [
+  '/favicon.ico'
+];
+const createExceptionsHandler = 
+  (next: (req: Request, res: Response) => void) => (req: Request, res: Response) => (
+    EXCEPTIONS.indexOf(req.url) !== -1
+      ? res.status(404).end()
+      : next(req, res)
+  )
 
-// function renderHTML(markup: string, store: any) {
-//   const html = ReactDOMServer.renderToString(
-//     <Html markup={markup} manifest={manifest} store={store} />,
-//   );
+const hanleRequest = (req: Request, res: Response) => {
+  const { url } = req;
+  let match: any;
+  const matchedRoute: IRouteProps = ROUTES.find(route => {
+    match = matchPath(url, route);
+    return !!match;
+  });
 
-//   return `<!doctype html> ${html}`;
-// }
-
-const about = () => <h3>about</h3>
-const help = () => <h3>help</h3>
-
-const home = () => {
-  return (
-    <div>
-      <Link to="/about">About</Link>
-      <Link to="/help">Help</Link>
-    </div>
-  );
-};
-const app = (props: any) => {
-  const date: Date =  props.date;
-  console.log('redering....')
-  console.log(props.url)
-  
-  return (
-    <StaticRouter
-      location={props.url}
-      context={props.context}
-    >
-      <Switch>
-        <Route exact path="/" component={home}/>      
-        <Route path="/about" component={about}/>
-        <Route path="/help" component={help}/>        
-      </Switch>
-  </StaticRouter>    
-  );
+  if (matchedRoute) {
+    return matchedRoute.loadData(match.params)
+      .then((data: any) => {
+        res.send(
+          ReactDOMServer.renderToString(
+            main({ 
+              context: {},
+              url, data
+            })
+          )
+        );
+      })
+  } 
+  res.status(404).end();
 };
 
-module.exports = (req: Request, res: Response) => {
-  // res.send('<h1>Hello world</h1>');
-  res.send(ReactDOMServer.renderToString(app({ 
-    date: new Date(),
-    url: req.url,
-    context: {}
-  })));
-};
+module.exports = createExceptionsHandler(hanleRequest);

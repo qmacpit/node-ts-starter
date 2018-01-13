@@ -1,9 +1,9 @@
-interface Artifact {
+interface IArtifact {
   id: string,
   size: number
 };
 
-const artifacts: Artifact[] = [
+const artifacts: IArtifact[] = [
   {
     id: '1',
     size: 100
@@ -15,16 +15,16 @@ const artifacts: Artifact[] = [
   null
 ];
 
-const getArtifact = (artifactId: string): Promise<Artifact> => {
+const getArtifact = (artifactId: string): Promise<IArtifact> => {
   // return Promise.resolve(artifacts.find(({id}) => id === artifactId));
-  return new Promise<Artifact>(resolve => {
+  return new Promise<IArtifact>(resolve => {
     resolve(artifacts.find(({id}) => id === artifactId));
   });
 };
 
-const getArtifacts = async (): Promise<Artifact[]> => artifacts.filter(Boolean);
+const getArtifacts = async (): Promise<IArtifact[]> => artifacts.filter(Boolean);
 
-const scanArtifact = ():Promise<Artifact[]> => {
+const scanArtifact = ():Promise<IArtifact[]> => {
   const scanArtifact = () => Promise.resolve({
     id: '0',
     size: 100
@@ -35,5 +35,5 @@ const scanArtifact = ():Promise<Artifact[]> => {
 };
 
 export {
-  getArtifact, getArtifacts
+  getArtifact, getArtifacts, IArtifact
 };

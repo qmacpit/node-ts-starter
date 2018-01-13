@@ -1,6 +1,5 @@
 import { Request, Response, Application, IRoute, Router } from "express";
-import { getArtifact, getArtifacts } from './typedPromise';
-import { WSAEWOULDBLOCK } from "constants";
+import { getArtifact, getArtifacts, IArtifact } from './typedPromise';
 
 export = (apiRouter: Router) => {
 
@@ -9,7 +8,7 @@ export = (apiRouter: Router) => {
     '/artifact/:id', 
     (req: Request, res: Response) => {
       getArtifact(req.params.id)
-      .then((artifact: any) => {
+      .then((artifact: IArtifact) => {
         res.send(artifact);
       });      
     }
